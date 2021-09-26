@@ -7,7 +7,8 @@
 ![img](screenshot/Screenshot_20210926_205158_com.sinriv.mgenner.jpg)  
 
 #### 使用方法
-[点击下载midilib完整app](https://midi.sinriv.com/app/)
+[点击下载MGenNer](app/release/app-release.apk)  
+[点击下载midilib完整app](https://midi.sinriv.com/app/)  
 
 #### 编译方法
 
