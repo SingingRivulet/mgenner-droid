@@ -2,9 +2,9 @@
 
 #### 介绍
 安卓高性能midi编辑器  
-[img](screenshot/Screenshot_20210926_115812_com.sinriv.midilib.jpg)  
-[img](screenshot/Screenshot_20210926_123851_com.sinriv.midilib.jpg)  
-[img](screenshot/Screenshot_20210926_205158_com.sinriv.mgenner.jpg)  
+![img](screenshot/Screenshot_20210926_115812_com.sinriv.midilib.jpg)  
+![img](screenshot/Screenshot_20210926_123851_com.sinriv.midilib.jpg)  
+![img](screenshot/Screenshot_20210926_205158_com.sinriv.mgenner.jpg)  
 
 #### 使用方法
 [点击下载midilib完整app](https://midi.sinriv.com/app/)
