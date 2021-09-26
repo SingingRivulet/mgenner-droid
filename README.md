@@ -11,7 +11,7 @@
 
 #### 编译方法
 
-直接使用Android Studio
+直接使用Android Studio编译  
 
 
 #### 参与贡献
