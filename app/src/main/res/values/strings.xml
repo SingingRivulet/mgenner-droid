@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">MGenNer</string>
+    <string name="title_activity_voice_changer_ui">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="midieditor_play">播放</string>
+    <string name="midieditor_stop">暂停</string>
+    <string name="start_midiEditor">midi编辑器</string>
+    <string name="midiEditor_view">midi编辑器（浏览模式）</string>
+    <string name="midiEditor_edit">midi编辑器（编辑模式）</string>
+    <string name="now_section_pre">节奏：</string>
+    <string name="now_section_end">/4</string>
+    <string name="midi_table_width">对齐：</string>
+    <string name="tempo_setting_title">设置速度</string>
+    <string name="tempo_setting_table_width">设置对齐</string>
+    <string name="tempo_setting_section">设置节奏</string>
+    <string name="midieditor_tempo_value">BPM:</string>
+    <string name="select_instrument">选择乐器</string>
+    <string name="midifile_ext">.mid</string>
+    <string name="bpm">BPM:</string>
+    <string name="tpq">TPQ:</string>
+    <string name="submit">确认</string>
+</resources>

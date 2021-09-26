@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/view_box"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/sinriv_bkg"
+        app:layout_constraintBottom_toTopOf="@+id/chordgen_radios"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:id="@+id/using_info_box">
+
+                <TextView
+                    android:id="@+id/using_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:id="@+id/set_section">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/now_section_pre" />
+                <TextView
+                    android:id="@+id/now_section"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/now_section_end" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:id="@+id/midi_table_width_box">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/midi_table_width" />
+                <TextView
+                    android:id="@+id/midi_table_width"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/chordgen_radios"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:orientation="vertical"
+        android:background="@color/sinriv_bkg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_box">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/midieditor_editBar">
+
+            <ImageButton
+                android:id="@+id/midieditor_select"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@color/midieditor_button"
+                android:minWidth="32dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_border_style_32" />
+
+            <ImageButton
+                android:id="@+id/midieditor_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@color/midieditor_button"
+                android:minWidth="32dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_clear_all_32" />
+
+            <ImageButton
+                android:id="@+id/midieditor_undo"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@color/midieditor_button"
+                android:minWidth="32dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_undo_32" />
+
+            <ImageButton
+                android:id="@+id/midieditor_focus"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@color/midieditor_button"
+                android:minWidth="32dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_center_focus_strong_32" />
+
+            <ImageButton
+                android:id="@+id/midieditor_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@color/midieditor_button"
+                android:minWidth="32dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_delete_32" />
+
+            <ImageButton
+                android:id="@+id/midieditor_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@color/midieditor_button"
+                android:minWidth="32dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_settings_32" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/midieditor_play"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:background="@color/midieditor_button"
+                android:minWidth="48dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_play_arrow_48" />
+
+            <ImageButton
+                android:id="@+id/midieditor_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:background="@color/midieditor_button"
+                android:minWidth="48dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_edit_48" />
+
+
+            <ImageButton
+                android:id="@+id/midieditor_file"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:background="@color/midieditor_button"
+                android:minWidth="48dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_insert_drive_file_48" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
