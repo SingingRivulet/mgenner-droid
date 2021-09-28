@@ -177,26 +177,26 @@ void editTable::loadMidi(const std::string & str){
     midifile.read(str);
     midifile.doTimeAnalysis();
     midifile.linkNotePairs();
-    
+
     TPQ=midifile.getTicksPerQuarterNote();
     rebuildNoteLen();
     ::__android_log_print(ANDROID_LOG_INFO, "mgenner","TPQ:%d",TPQ);
     int tracks = midifile.getTrackCount();
-    
+
     if (tracks > 1){
         ::__android_log_print(ANDROID_LOG_INFO, "mgenner","TRACKS:%d",tracks);
     }
-    
+
     std::set<int> iset;
-    
+
     for (int track=0; track<tracks; track++) {
-        
+
         char infoBuf[128];
-        
+
         int instrumentId = 0;
-        
+
         for (int event=0; event<midifile[track].size(); event++) {
-            
+
             if (midifile[track][event].isNoteOn() && midifile[track][event].size()>=3){
                 int position = midifile[track][event].tick;
                 int delay = midifile[track][event].getTickDuration();
@@ -216,11 +216,14 @@ void editTable::loadMidi(const std::string & str){
         }
     }
 
-    ::__android_log_print(ANDROID_LOG_INFO, "mgenner","load tempos");
-    for(int i=0; i<midifile.getNumEvents(0); i++){
-        if(midifile.getEvent(0,i).isTempo()){//是设置时间
-            double tp = midifile.getEvent(0,i).getTempoBPM();
-            addTempo(midifile.getEvent(0,i).tick,tp);
+    auto numTracks = midifile.getNumTracks();
+    ::__android_log_print(ANDROID_LOG_INFO, "mgenner","load controls numTracks:%d",numTracks);
+    for(int trackIndex=0;trackIndex<numTracks;++trackIndex) {
+        for (int i = 0; i < midifile.getNumEvents(trackIndex); i++) {
+            if (midifile.getEvent(trackIndex, i).isTempo()) {//是设置时间
+                double tp = midifile.getEvent(trackIndex, i).getTempoBPM();
+                addTempo(midifile.getEvent(trackIndex, i).tick, tp);
+            }
         }
     }
 
@@ -237,79 +240,79 @@ void editTable::exportMidi(const std::string & filename){
     int trackNum=1;//0音轨存没有info的音符
     int track;
     MidiFile midifile;
-    
+
     midifile.setTPQ(TPQ);//0音轨
     midifile.addTrack();//0音轨
-    
+
     struct noteMap_t{
         int tone,volume,time;
         bool isNoteOn;
     };
-    
+
     std::map<int,std::pair<int,std::vector<noteMap_t*> > > noteMap;
-    
+
     for(auto it:notes){
         if(it->info.empty()){
             track=0;
-            
+
             //midifile.addNoteOn(track, it->begin , 0, it->tone , it->volume > 100 ? 100 : it->volume);
             //midifile.addNoteOff(track, it->begin + it->delay , 0, it->tone);
-            
+
         }else{
             if(it->info.at(0)!='@'){//为@是控制字符
                 auto tit=tracks.find(it->info);
-                
+
                 if(tit==tracks.end()){//没有音轨
                     midifile.addTrack();
                     tracks[it->info]=trackNum;
                     track=trackNum;
                     ++trackNum;
-                    
+
                     auto p1 = new noteMap_t;
                     p1->tone   = it->tone;
                     p1->volume = it->volume > 100 ? 100 : it->volume;
                     p1->time   = it->begin;
                     p1->isNoteOn = true;
-                    
+
                     auto p2 = new noteMap_t;
                     p2->tone   = it->tone;
                     p2->volume = 0;
                     p2->time   = it->begin + it->delay;
                     p2->isNoteOn = false;
-                    
+
                     auto & lst = noteMap[track];
                     lst.first  = getInstrumentId(it->info);
                     lst.second.push_back(p1);
                     lst.second.push_back(p2);
-                    
+
                     //midifile.addNoteOn(track, it->begin , 0, it->tone , it->volume > 100 ? 100 : it->volume);
                     //midifile.addNoteOff(track, it->begin + it->delay , 0, it->tone);
-                    
+
                 }else{
                     track=tit->second;
-                    
-                    
+
+
                     auto p1 = new noteMap_t;
                     p1->tone   = it->tone;
                     p1->volume = it->volume > 100 ? 100 : it->volume;
                     p1->time   = it->begin;
                     p1->isNoteOn = true;
-                    
+
                     auto p2 = new noteMap_t;
                     p2->tone   = it->tone;
                     p2->volume = 0;
                     p2->time   = it->begin + it->delay;
                     p2->isNoteOn = false;
-                    
+
                     auto & lst = noteMap[track];
                     lst.second.push_back(p1);
                     lst.second.push_back(p2);
-                    
+
                     //midifile.addNoteOn(track, it->begin , 0, it->tone , it->volume > 100 ? 100 : it->volume);
                     //midifile.addNoteOff(track, it->begin + it->delay , 0, it->tone);
-                    
+
                 }
-                
+
             }
         }
     }
@@ -321,13 +324,13 @@ void editTable::exportMidi(const std::string & filename){
         int ch = tk;
         if(ch>15)
             ch = 15;
-        
+
         sort(itlst.second.second.begin(),itlst.second.second.end(),[](noteMap_t * a,noteMap_t * b){
             return a->time < b->time;
         });
-        
+
         midifile.addTimbre(tk,0,ch,itlst.second.first);
-        
+
         for(auto it:itlst.second.second){//扫描音轨
             if(it->isNoteOn){
                 midifile.addNoteOn(tk, it->time , ch, it->tone , it->volume);

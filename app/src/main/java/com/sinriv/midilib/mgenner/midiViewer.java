@@ -109,12 +109,13 @@ public class midiViewer extends View {
         setOnTouchListener(new OnTouchListener() {
             float point0_x_last=0;
             float point0_y_last=0;
-            float point0_x_start=0;
-            float point0_y_start=0;
+            float point0_x_start=-10000;
+            float point0_y_start=-10000;
             int last_len_x=0;
             int last_len_y=0;
             float last_len_x_view=0;
             float last_len_y_view=0;
+            long double_click_time = 0;//双击计时器
             boolean point0_using   = false;
             boolean selectSingle   = false;
             boolean scrollMode     = false;
@@ -273,6 +274,15 @@ public class midiViewer extends View {
                         } else {
                             switch (action) {
                                 case MotionEvent.ACTION_DOWN:
+                                    long nowTime = System.currentTimeMillis();
+                                    if(Math.abs(double_click_time -nowTime)<250){
+                                        if(Math.max(x-point0_x_start,y-point0_y_start)<50){
+                                            changePlayingStatus();
+                                        }
+                                        double_click_time = 0;
+                                    }else{
+                                        double_click_time = nowTime;
+                                    }
                                     point0_using = true;
                                     point0_x_last = x;
                                     point0_y_last = y;
@@ -281,6 +291,10 @@ public class midiViewer extends View {
                                     break;
                                 case MotionEvent.ACTION_UP:
                                     point0_using = false;
+                                    if(Math.max(x-point0_x_start,y-point0_y_start)>50){
+                                        //拖动不会触发暂停
+                                        double_click_time = 0;
+                                    }
                                     break;
                                 case MotionEvent.ACTION_MOVE:
                                     if(point0_using) {
@@ -332,7 +346,7 @@ public class midiViewer extends View {
         view.playStep();
         invalidate();
     }
-    
+
     protected void onMoveScreen(float dx,float dy){
         float lx = view.getLookAtX();
         float ly = view.getLookAtY();
@@ -345,6 +359,7 @@ public class midiViewer extends View {
     }
     protected void setDefaultInfo(String info){}
     protected void setSectionView(int s){}
+    protected void changePlayingStatus(){}
     String [] tempoSetting_items = {"添加","删除"};
     protected void tempoSetting(int x,int y){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

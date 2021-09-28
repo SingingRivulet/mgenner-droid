@@ -87,7 +87,7 @@ abstract public class uiView extends scrollGenerator{
         bd.set(fx-2,fy-2,tx+2,ty+2);
         if(onlydisplay) {
             paint.setARGB(255,volume, volume, 30);
-            viewCanvas.drawRect(rect, paint);
+            viewCanvas.drawRect(bd, paint);
         }else if(selected){
             paint.setARGB(255,255, 128, 192);
             viewCanvas.drawRect(bd, paint);
@@ -119,10 +119,23 @@ abstract public class uiView extends scrollGenerator{
         }
         viewCanvas.drawRect(rect, paint);
 
-        if((fontSize>=40) && !info.isEmpty() && infoFilter.isEmpty() && (selected || info.charAt(0)=='@')){
-            paint.setTextSize(fontSize);
+        if(
+                fontSize>=60 ||
+                        (
+                                (fontSize>=40) &&
+                                        !info.isEmpty() &&
+                                        infoFilter.isEmpty() &&
+                                        (selected || info.charAt(0)=='@')
+                        )
+        ){
+            paint.setTextSize(40);
             paint.setColor(0xFFFFFFFF);
-            viewCanvas.drawText(info, fx,fy+fontSize , paint);
+            viewCanvas.drawText(info, fx,fy+40 , paint);
+        }
+        if(fontSize>=60){
+            paint.setTextSize(20);
+            paint.setColor(0xFFFFFFFF);
+            viewCanvas.drawText("音量："+volume, fx,ty , paint);
         }
     }
     @Override
@@ -176,7 +189,11 @@ abstract public class uiView extends scrollGenerator{
             if(to-from>=40) {
                 paint.setTextSize(40);
                 paint.setColor(0xFFFFFFFF);
-                viewCanvas.drawText(tones[k], 0, from + 40, paint);
+                String str = tones[k];
+                if(k==0){
+                    str += " "+(t/12);
+                }
+                viewCanvas.drawText(str, 0, from + 40, paint);
             }
         }
     }
@@ -208,11 +225,15 @@ abstract public class uiView extends scrollGenerator{
     @Override
     protected void drawTempo(float p,double t){
         rect.set(p,0,p+1,windowHeight-30);
-        paint.setARGB(255,128,128,128);
+        paint.setARGB(255,128,64,128);
         viewCanvas.drawRect(rect, paint);
-        paint.setARGB(255,64, 128, 128);
+        paint.setARGB(255,128, 64, 128);
         paint.setTextSize(40);
-        viewCanvas.drawText("BPM="+ (int) Math.round(t), p,windowHeight-tempo_pos+40 , paint);
+        if(p<=0) {
+            viewCanvas.drawText("BPM=" + (int) Math.round(t), p, windowHeight - tempo_pos + 40, paint);
+        }else{
+            viewCanvas.drawText(Integer.toString((int)Math.round(t)), p, windowHeight - tempo_pos + 40, paint);
+        }
     }
     @Override
     protected void drawTempoPadd(){

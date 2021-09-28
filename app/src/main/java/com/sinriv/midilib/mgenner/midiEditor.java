@@ -19,6 +19,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,6 +41,7 @@ public class midiEditor extends AppCompatActivity {
     }
     LinearLayout view_box;
     LinearLayout editTool_box;
+    int editTool_box_height;
     TextView loading_box;
     TextView using_info;
     String using_info_text = "";
@@ -83,11 +85,27 @@ public class midiEditor extends AppCompatActivity {
             protected void setSectionView(int s){
                 section_view.setText(Integer.toString(s));
             }
+            @Override
+            protected void changePlayingStatus() {
+                if(viewer.getPlayingStatus()) {
+                    viewer.playStop();
+                    play_button.setImageDrawable(ContextCompat.getDrawable(midiEditor.this,R.drawable.ic_baseline_play_arrow_48));
+                }else {
+                    viewer.playStart();
+                    play_button.setImageDrawable(ContextCompat.getDrawable(midiEditor.this,R.drawable.ic_baseline_pause_48));
+                }
+            }
         };
         viewer.init();
 
+        //隐藏工具控件
         editTool_box = findViewById(R.id.midieditor_editBar);
         editTool_box.setVisibility(View.INVISIBLE);
+        ViewGroup.LayoutParams params = editTool_box.getLayoutParams();
+        editTool_box_height = params.height;
+        params.height = 0;
+        editTool_box.setLayoutParams(params);
+
         view_box = findViewById(R.id.view_box);
         loading_box = findViewById(R.id.loading);
 
@@ -97,15 +115,7 @@ public class midiEditor extends AppCompatActivity {
 
         //播放键
         play_button = findViewById(R.id.midieditor_play);
-        play_button.setOnClickListener(v -> {
-            if(viewer.getPlayingStatus()) {
-                viewer.playStop();
-                play_button.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_baseline_play_arrow_48));
-            }else {
-                viewer.playStart();
-                play_button.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_baseline_pause_48));
-            }
-        });
+        play_button.setOnClickListener(v -> viewer.changePlayingStatus());
 
         //编辑键
         edit_button = findViewById(R.id.midieditor_edit);
@@ -115,11 +125,19 @@ public class midiEditor extends AppCompatActivity {
                 edit_button.setBackgroundColor(getResources().getColor(R.color.midieditor_button));
                 editMode = false;
                 editTool_box.setVisibility(View.INVISIBLE);
+                //调整高度
+                ViewGroup.LayoutParams p = editTool_box.getLayoutParams();
+                p.height = 0;
+                editTool_box.setLayoutParams(p);
             }else {
                 setTitle(R.string.midiEditor_edit);
                 edit_button.setBackgroundColor(getResources().getColor(R.color.midieditor_button_selected));
                 editMode = true;
                 editTool_box.setVisibility(View.VISIBLE);
+                //调整高度
+                ViewGroup.LayoutParams p = editTool_box.getLayoutParams();
+                p.height = editTool_box_height;
+                editTool_box.setLayoutParams(p);
             }
             viewer.editMode = editMode;
         });
@@ -149,7 +167,7 @@ public class midiEditor extends AppCompatActivity {
             }
         });
         edit_delete = findViewById(R.id.midieditor_delete);
-        edit_delete.setOnClickListener(v -> {viewer.view.removeSelected();});
+        edit_delete.setOnClickListener(v -> viewer.view.removeSelected());
         edit_setting = findViewById(R.id.midieditor_setting);
         edit_setting.setOnClickListener(v -> settingMenu());
         findViewById(R.id.midi_table_width_box).setOnClickListener(v -> setTableWidth_dialog());
